@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Emprunteurs</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="design/css/style.css" />
+        <link href="design/css/bootstrap.css" rel="stylesheet">
+        <script type="text/javascript" src="design/js/angular.js"></script>
+        <script type="text/javascript" src="design/js/angular-resource.js"></script>
+        <script type="text/javascript" src="design/js/formulaire.js"></script>
+        <!-- jQuery -->
+        <script src="design/js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="design/js/bootstrap.min.js"></script>
+        <h1 align="center"> Emprunteur </h1></br>
+    </head>
+    <body align="center">
+        <div class="container-fluid">
+
+            <div ng-app="EmprunteurA" class="row-fluid" ng-controller="emprunteurCtrl">
+                <div class="col-xs-4">
+                    <form name="formEmp" ng-submit="addEmp()" id="formEmp" class="well">
+                        <legend>Ajout d'un emprunteur</legend>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="nom">Nom de l'emprunteur</label>
+                                <input type="text" name="nom" id="nom" class="form-control" ng-model="emp.nom"/>
+                            </div><br>
+                            <div class="form-group">
+                                <label for="prenom">Prénom de l'emprunteur</label>
+                                <input type="text" name="prenom" id="prenom"  class="form-control" ng-model="emp.prenom"/>
+                            </div>
+                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok-sign" ></span> Ajouter</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="col-xs-5 row-fluid">
+
+                    <table class="table">
+                        <thead>
+                            <tr class="active">
+                                  <td align="center" style="display:none;">ID</td>
+                                  <td align="center" >Nom de l'emprunteur</td>
+                                  <td align="center" >Prénom de l'emprunteur</td>
+                                  <!--<td align="center">Supprimer</td>-->
+                                  <td><input class ="search" type="search" ng-model="q" placeholder="Filtrer par nom ou prénom..." /></td>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr ng-repeat="emp in emprunteur | filter:q as results">
+                                  <td align="center" style="display:none;">{{emp.idemprunteur}}</td>
+                                  <td align="center">{{emp.nom}}</td>
+                                  <td align="center">{{emp.prenom}}</td>
+                                  <td style="width: 130px;"><button class="btn" ng-click="removeEmp($index, emp.idemprunteur)"><span class="glyphicon glyphicon-trash"></span></button>&nbsp;<button class="btn" ng-click="updateEmp($index)"><span class="glyphicon glyphicon-user"></span></button></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+                </div>
+            </div>
+    </body>
+</html>
