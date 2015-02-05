@@ -11,9 +11,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="design/css/style.css" />
         <link href="design/css/bootstrap.css" rel="stylesheet">
+        <link href="design/css/font-awesome.css" rel="stylesheet">
+        <link href="design/css/xeditable.css" rel="stylesheet">
         <script type="text/javascript" src="design/js/angular.js"></script>
         <script type="text/javascript" src="design/js/angular-resource.js"></script>
         <script type="text/javascript" src="design/js/formulaire.js"></script>
+        <script type="text/javascript" src="design/js/xeditable.js"></script>
         <!-- jQuery -->
         <script src="design/js/jquery.js"></script>
         <!-- Bootstrap Core JavaScript -->
@@ -37,7 +40,7 @@ and open the template in the editor.
                                 <input type="text" name="prenom" id="prenom"  class="form-control" ng-model="emp.prenom"/>
                             </div>
                             <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok-sign" ></span> Ajouter</button>
-                        </fieldset>
+                          </fieldset>
                     </form>
                 </div>
                 <div class="col-xs-5 row-fluid">
@@ -55,9 +58,27 @@ and open the template in the editor.
                           <tbody>
                               <tr ng-repeat="emp in emprunteur | filter:q as results">
                                   <td align="center" style="display:none;">{{emp.idemprunteur}}</td>
-                                  <td align="center">{{emp.nom}}</td>
-                                  <td align="center">{{emp.prenom}}</td>
-                                  <td style="width: 130px;"><button class="btn" ng-click="removeEmp($index, emp.idemprunteur)"><span class="glyphicon glyphicon-trash"></span></button>&nbsp;<button class="btn" ng-click="updateEmp($index)"><span class="glyphicon glyphicon-user"></span></button></td>
+                                  <td align="center"><span editable-text="emp.nom" e-name="nom" e-form="rowform">{{emp.nom}}</span></td>
+                                  <td align="center"><span editable-text="emp.prenom" e-name="prenom" e-form="rowform">{{emp.prenom}}</span></td>
+
+                                  <td style="width: 130px;">
+                                    <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == emp">
+                                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                      <span class="glyphicon glyphicon-floppy-saved"></span>
+                                    </button>&nbsp;
+                                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-danger">
+                                      <span class="glyphicon glyphicon-floppy-remove"></span>
+                                    </button>
+                                  </form>
+                                  <div class="buttons" ng-show="!rowform.$visible">
+                                    <button class="btn btn-primary" ng-click="rowform.$show()">
+                                      <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                    <button class="btn btn-danger" ng-click="removeEmp($index, emp.idemprunteur)">
+                                      <i class="fa fa-times-circle"></i>
+                                    </button>
+                                  </div>
+                                  </td>
                               </tr>
                           </tbody>
                       </table>

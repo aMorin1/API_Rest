@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-    var app = angular.module('EmprunteurA', []);
+    var app = angular.module('EmprunteurA', ["xeditable"]);
 
     app.controller('emprunteurCtrl', function ($scope, $http) {
 
@@ -15,7 +15,7 @@
             var del = 'http://localhost/API_Rest/back/emprunteur/';
             del += id;
             alert("Vous êtes sur le point de supprimer l'utilisateur: " + del);
-            http.delete(del);
+            $http.delete(del);
           };
 
         $scope.addEmp = function () {
@@ -31,10 +31,7 @@
         };
 
       $scope.updateEmp = function (index) {
-            $scope.emprunteur[index]["nom"];
-            $scope.emprunteur[index]["prenom"];
-            $("#nom").val($scope.emprunteur[index]["nom"]);
-            $("#prenom").val($scope.emprunteur[index]["prenom"]);
+          
         };
 
 
