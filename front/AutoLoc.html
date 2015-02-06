@@ -13,10 +13,12 @@ and open the template in the editor.
         <link href="design/css/bootstrap.css" rel="stylesheet">
         <link href="design/css/font-awesome.css" rel="stylesheet">
         <link href="design/css/xeditable.css" rel="stylesheet">
+        <link href="design/css/ngDialog.css" rel="stylesheet">
         <script type="text/javascript" src="design/js/angular.js"></script>
         <script type="text/javascript" src="design/js/angular-resource.js"></script>
         <script type="text/javascript" src="design/js/formulaire.js"></script>
         <script type="text/javascript" src="design/js/xeditable.js"></script>
+        <script type="text/javascript" src="design/js/ngDialog.js"></script>
         <!-- jQuery -->
         <script src="design/js/jquery.js"></script>
         <!-- Bootstrap Core JavaScript -->
@@ -63,7 +65,7 @@ and open the template in the editor.
 
                                   <td style="width: 130px;">
                                     <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == emp">
-                                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                    <button type="submit" ng-click="updateEmp()" ng-disabled="rowform.$waiting" class="btn btn-primary">
                                       <span class="glyphicon glyphicon-floppy-saved"></span>
                                     </button>&nbsp;
                                     <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-danger">
@@ -74,7 +76,7 @@ and open the template in the editor.
                                     <button class="btn btn-primary" ng-click="rowform.$show()">
                                       <i class="fa fa-pencil-square-o"></i>
                                     </button>
-                                    <button class="btn btn-danger" ng-click="removeEmp($index, emp.idemprunteur)">
+                                    <button class="btn btn-danger" ng-click="removeEmp($index)">
                                       <i class="fa fa-times-circle"></i>
                                     </button>
                                   </div>
@@ -83,7 +85,10 @@ and open the template in the editor.
                           </tbody>
                       </table>
                   </div>
-
+                  <script type="text/ng-template" id="templateId">
+                    <h1>Template heading</h1>
+                    <p>Content goes here</p>
+                  </script>
                 </div>
             </div>
     </body>

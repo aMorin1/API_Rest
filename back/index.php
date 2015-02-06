@@ -75,6 +75,7 @@ function updateProduct($id) {
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $Product->nom);
         $stmt->bindParam("prenom", $Product->prenom);
+        $stmt->bindParam("idemprunteur", $id);
         $stmt->execute();
         $db = null;
         echo json_encode($Product);
