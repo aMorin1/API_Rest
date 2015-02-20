@@ -2066,7 +2066,8 @@ caption {
   text-align: left;
 }
 th {
-  text-align: left;
+  text-align: center;
+  font-size: 16px;
 }
 .table {
   width: 100%;
@@ -2154,7 +2155,7 @@ table th[class*="col-"] {
 .table > thead > tr.active > th,
 .table > tbody > tr.active > th,
 .table > tfoot > tr.active > th {
-  background-color: #36b3e9;
+  background-color: #ffffff;
 }
 .table-hover > tbody > tr > td.active:hover,
 .table-hover > tbody > tr > th.active:hover,

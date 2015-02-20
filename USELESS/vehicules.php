@@ -8,18 +8,17 @@ $app = new \Slim\Slim([
     'templates.path' => 'templates'
 ]);
 
-$app->get('/emprunteur', 'getProducts');
-$app->get('/emprunteur/:idemprunteur', 'getProduct');
-$app->post('/emprunteur', 'addProduct');
-$app->put('/emprunteur/:idemprunteur', 'updateProduct');
-$app->delete('/emprunteur/:idemprunteur', 'deleteProduct');
-$app->delete('/emprunteur/:idemprunteur', 'deleteAll');
+$app->get('/vehicule', 'getProducts');
+$app->get('/vehicule/:immatriculation', 'getProduct');
+$app->post('/vehicule', 'addProduct');
+$app->put('/vehicule/:idvehicule', 'updateProduct');
+$app->delete('/vehicule/:idvehicule', 'deleteProduct');
 
 $app->run();
 
 function getProducts() {
 
-    $sql = "SELECT idemprunteur, nom, prenom FROM emprunteur";
+    $sql = "SELECT * FROM vehicule";
     try {
         $db = getConnection();
         $stmt = $db->query($sql);
@@ -32,11 +31,11 @@ function getProducts() {
 }
 
 function getProduct($id) {
-    $sql = "SELECT * FROM emprunteur WHERE idemprunteur=:idemprunteur";
+    $sql = "SELECT * FROM vehicule WHERE immatriculation=:immatriculation";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("idemprunteur", $id);
+        $stmt->bindParam("immatriculation", $id);
         $stmt->execute();
         $Product = $stmt->fetchObject();
         $db = null;
@@ -50,14 +49,21 @@ function addProduct() {
     error_log('addProduct\n', 3, '/var/tmp/php.log');
     $request = Slim\Slim::getInstance()->request();
     $Product = json_decode($request->getBody());
-    $sql = "INSERT INTO emprunteur (nom, prenom ) VALUES (:nom, :prenom)";
+    $sql = "INSERT INTO (`immatriculation`, `dateMiseCirculation`, `marque`,
+            `modele`, `energie`, `releveKm`, `prochaineRevisionKm`)
+            VALUES (:immatriculation, :dateMiseCirculation, :marque, :modele, :energie, :releveKm, :prochaineRevisionKm)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("nom", $Product->nom);
-        $stmt->bindParam("prenom", $Product->prenom);
+        $stmt->bindParam("immatriculation", $Product->immatriculation);
+        $stmt->bindParam("dateMiseCirculation", $Product->dateMiseCirculation);
+        $stmt->bindParam("marque", $Product->marque);
+        $stmt->bindParam("modele", $Product->modele);
+        $stmt->bindParam("energie", $Product->energie);
+        $stmt->bindParam("releveKm", $Product->releveKm);
+        $stmt->bindParam("prochaineRevisionKm", $Product->prochaineRevisionKm);
         $stmt->execute();
-        $Product->nom = $db->lastInsertId();
+        $Product->immatriculation = $db->lastInsertId();
         $db = null;
         echo json_encode($Product);
     } catch (PDOException $e) {
@@ -70,13 +76,19 @@ function updateProduct($id) {
     $request = Slim\Slim::getInstance()->request();
     $body = $request->getBody();
     $Product = json_decode($body);
-    $sql = "UPDATE emprunteur SET nom=:nom, prenom=:prenom WHERE idemprunteur=:idemprunteur";
+    $sql = "UPDATE vehicule SET immatriculation=:immatriculation, dateMiseCirculation=:dateMiseCirculation, marque=:marque,
+            modele=:modele, energie=:energie, releveKm=:releveKm, prochaineRevisionKm=:prochaineRevisionKm WHERE idvehicule=:idvehicule";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("nom", $Product->nom);
-        $stmt->bindParam("prenom", $Product->prenom);
-        $stmt->bindParam("idemprunteur", $id);
+        $stmt->bindParam("immatriculation", $Product->immatriculation);
+        $stmt->bindParam("dateMiseCirculation", $Product->dateMiseCirculation);
+        $stmt->bindParam("marque", $Product->marque);
+        $stmt->bindParam("modele", $Product->modele);
+        $stmt->bindParam("energie", $Product->energie);
+        $stmt->bindParam("releveKm", $Product->releveKm);
+        $stmt->bindParam("prochaineRevisionKm", $Product->prochaineRevisionKm);
+        $stmt->bindParam("idvehicule", $id);
         $stmt->execute();
         $db = null;
         echo json_encode($Product);
@@ -86,24 +98,11 @@ function updateProduct($id) {
 }
 
 function deleteProduct($id) {
-    $sql = "DELETE FROM emprunteur WHERE idemprunteur=:idemprunteur";
+    $sql = "DELETE FROM vehicule WHERE idvehicule=:idvehicule";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("idemprunteur", $id);
-        $stmt->execute();
-        $db = null;
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function deleteAll($id) {
-    $sql = "DELETE FROM emprunteur WHERE idemprunteur=:idemprunteur";
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("idemprunteur", $id);
+        $stmt->bindParam("idvehicule", $id);
         $stmt->execute();
         $db = null;
     } catch (PDOException $e) {
