@@ -15,11 +15,14 @@ $app->put('/emprunteur/:idemprunteur', 'updateProduct');
 $app->delete('/emprunteur/:idemprunteur', 'deleteProduct');
 $app->delete('/emprunteur/:idemprunteur', 'deleteAll');
 
+$app->get('/user', 'getUsers');
+
 $app->run();
+
 
 function getProducts() {
 
-    $sql = "SELECT idemprunteur, nom, prenom FROM emprunteur";
+    $sql = "SELECT idemprunteur, nom, prenom, age FROM emprunteur";
     try {
         $db = getConnection();
         $stmt = $db->query($sql);
@@ -47,21 +50,21 @@ function getProduct($id) {
 }
 
 function addProduct() {
-    error_log('addProduct\n', 3, '/var/tmp/php.log');
     $request = Slim\Slim::getInstance()->request();
     $Product = json_decode($request->getBody());
-    $sql = "INSERT INTO emprunteur (nom, prenom ) VALUES (:nom, :prenom)";
+    $sql = "INSERT INTO emprunteur (nom, prenom, date_naissance) VALUES (:nom, :prenom, :date_naissance)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $Product->nom);
         $stmt->bindParam("prenom", $Product->prenom);
+        $stmt->bindParam("date_naissance", $Product->date_naissance);
         $stmt->execute();
-        $Product->nom = $db->lastInsertId();
+        //$Product->nom = $db->lastInsertId();
         $db = null;
         echo json_encode($Product);
     } catch (PDOException $e) {
-        error_log($e->getMessage(), 3, '/var/tmp/php.log');
+        //error_log($e->getMessage(), 3, '/var/tmp/php.log');
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 }
@@ -111,17 +114,49 @@ function deleteAll($id) {
     }
 }
 
+function getUsers() {
+
+    $sql = "SELECT nom, prenom, photo FROM utilisateur";
+    try {
+        $db = getConnection2();
+        $stmt = $db->query($sql);
+        $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        for($i=0; $i<sizeof($product); $i++){
+            if (strpos($product[$i]['photo'],"PNG") !== false){
+                $product[$i]['photo'] = base64_encode($product[$i]['photo']);
+            }
+        }
+                    
+        $db = null;
+        echo json_encode($product);
+    }
+    catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
 function getConnection() {
     $dbhost = "localhost";
     $dbuser = "root";
-    $dbpass = "azerty";
+    $dbpass = "";
     $dbname = "location";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->query('SET NAMES utf8');
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     return $dbh;
+}
+function getConnection2() {
+    $dbhost = "localhost";
+    $dbuser = "adm";
+    $dbpass = "";
+    $dbname = "camera";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->query('SET NAMES utf8');
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    return $dbh;
 }
 
 ?>

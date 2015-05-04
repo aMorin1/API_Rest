@@ -2,7 +2,7 @@
 (function () {
 
   //Initialisation du module AngularJS et du module xeditable.
-  var app = angular.module('EmprunteurA', ["xeditable"]);
+  var app = angular.module('EmprunteurA', ['xeditable']);
 
   //Controleur principal de l'app AngularJS
   app.controller('emprunteurCtrl', function ($scope, $http) {
@@ -20,6 +20,7 @@
       });
     };
     $scope.init();
+    
 
     //Méthode DELETE -> Suppression d'un élement
     $scope.removeEmp = function(index, nom, prenom){
@@ -31,18 +32,15 @@
     };
 
     //Méthode POST -> Ajouter un élement dans la base
-    $scope.addEmp = function () {
-      $scope.emprunteur.push({
-        nom: this.emp.nom,
-        prenom: this.emp.prenom
-
-      });
+    $scope.addEmp = function () {      
+      var dat = $scope.emp.date_naissance.substring(6, 10) + "-" + $scope.emp.date_naissance.substring(3, 5) + "-" + $scope.emp.date_naissance.substring(0, 2);  
       $http.post(url,{
         nom: this.emp.nom,
-        prenom: this.emp.prenom
+        prenom: this.emp.prenom,
+        date_naissance: dat
       });
-      $scope.emp =[];
-      $scope.init();
+      $scope.emp ="";
+      setTimeout($scope.init,500);
     };
 
     //Méthode PUT -> MàJ d'un élément

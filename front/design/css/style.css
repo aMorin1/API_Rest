@@ -1,7 +1,23 @@
-.btn {
-  background-color: #d2edf8;
-}
-
 .search {
   width: 200px;
+  border-radius: 8px;
+}
+#background {
+background-image:url("../images/woodbg.jpg");
+}
+
+#tDonnees {
+  border-radius:5px;
+}
+#tdSup {
+  background-color: transparent;
+  border:0px;
+}
+
+.tdEdit {
+    width: 100px;
+}
+
+.formEdit {
+    width: 100px;
 }
